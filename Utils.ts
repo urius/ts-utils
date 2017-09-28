@@ -18,11 +18,13 @@ export module Utils {
             if(Array.isArray(target) == Array.isArray(origin)) {
                 if(Array.isArray(target) && Array.isArray(origin)) {
                     if(target.length > 0 && origin.length > 0) {
-                        let subResult:ICompareJSONResult = compareJSONSchemas(target[0], origin[0]);
-                        if(subResult.success == false) {
-                            result.success == false;
-                            result.location += "[]" + (subResult.location.length > 0 ? ("." + subResult.location) : "");
-                            return result;
+                        for (let i:number = 0; i < target.length; i++) {
+                            let subResult:ICompareJSONResult = compareJSONSchemas(target[i], origin[0]);
+                            if(subResult.success == false) {
+                                result.success == false;
+                                result.location += "[" + i + "]" + (subResult.location.length > 0 ? ("." + subResult.location) : "");
+                                return result;
+                            }
                         }
                         return result;
                     }
