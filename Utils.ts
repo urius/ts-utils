@@ -21,7 +21,7 @@ export module Utils {
                         for (let i:number = 0; i < target.length; i++) {
                             let subResult:ICompareJSONResult = compareJSONSchemas(target[i], origin[0]);
                             if(subResult.success == false) {
-                                result.success == false;
+                                result.success = false;
                                 result.location += "[" + i + "]" + (subResult.location.length > 0 ? ("." + subResult.location) : "");
                                 return result;
                             }
@@ -33,7 +33,14 @@ export module Utils {
                     let subResult:ICompareJSONResult = compareJSONSchemas(target[prop], origin[prop]);
                     if(subResult.success == false) {
                         result.success = false;
-                        result.location += prop + (subResult.location.length > 0 ? ("." + subResult.location) : "");
+                        result.location += prop
+                        if(subResult.location.length > 0) {
+                            if(Array.isArray(target[prop]) == false) {
+                                result.location += "." + subResult.location;
+                            } else {
+                                result.location += subResult.location;
+                            }
+                        }
                         return result;
                     }
                 }
